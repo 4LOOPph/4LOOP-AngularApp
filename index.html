@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html ng-app="starter">
+
+<head>
+    <!-- <base href="/"> -->
+    <meta charset="UTF-8">
+    <title>4LOOP Angular App</title>
+    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+    <link rel="icon" type="image/ico" href="../images/favicon.ico">
+    <!-- LIBRARY -->
+    <!-- build:css css/main.min.css -->
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="styles/style.css" rel="stylesheet" type="text/css" />
+    <!-- endbuild -->
+</head>
+
+<body>
+    <!--
+        *
+        *
+        *
+        Angular View
+        *
+        *
+        *
+        -->
+    <div ui-view></div>
+    <!--
+        *
+        *
+        *
+        Angular View
+        *
+        *
+        *
+        -->
+    <!-- ./wrapper -->
+    <!-- build:js js/main.min.js -->
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/lodash/dist/lodash.min.js"></script>
+    <script src="bower_components/async/dist/async.min.js"></script>
+    <script src="bower_components/moment/min/moment.min.js"></script>
+    <!--
+        *
+        *
+        ANGULAR LIBRARY
+        *
+        *-->
+    <script src="bower_components/angular/angular.min.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
+    <script src="bower_components/restangular/dist/restangular.min.js"></script>
+    <script src="bower_components/angular-moment/angular-moment.min.js"></script>
+    <!--
+        *
+        *
+        *
+        *
+        *
+        ANGULAR
+        *
+        *
+        *
+        *
+        *-->
+    <!-- build:js1 js/app.min.js -->
+    <script src="scripts/app.js"></script>
+    <script src="scripts/app.config.js"></script>
+    <script src="scripts/app.run.js"></script>
+    <!-- CONTROLLERS -->
+    <!-- LOGIN / FORGOT-->
+    <script src="modules/users/users.js"></script>
+    <script src="modules/users/users.controller.js"></script>
+    <!-- endbuild -->
+</body>
+
+</html>
