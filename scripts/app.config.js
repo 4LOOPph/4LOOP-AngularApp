@@ -6,7 +6,7 @@
             function($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider, RestangularProvider, API_URL, API_VERSION) {
 
                 $locationProvider.html5Mode({ enabled: false, requireBase: false });
-                $locationProvider.hashPrefix("");
+                $locationProvider.hashPrefix('');
 
 
                 $urlRouterProvider.otherwise('/main');

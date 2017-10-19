@@ -9,5 +9,5 @@
             'angularMoment'
         ])
         .constant('API_URL', 'http://localhost:3000')
-        .constant('API_VERSION', '/api/1.0/')
+        .constant('API_VERSION', '/api/1.0/');
 })();

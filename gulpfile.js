@@ -11,6 +11,8 @@ var clean = require('gulp-clean');
 var rename = require('gulp-rename');
 var less = require('gulp-less');
 var path = require('path');
+var jshint = require('gulp-jshint');
+var stylish = require('jshint-stylish');
 
 var runSeq = require('run-sequence');
 
@@ -23,19 +25,19 @@ var paths = {
 };
 
 
-gulp.task('less', function () {
+gulp.task('less', function() {
     return gulp.src('./styles/**/*.less')
         .pipe(less())
         .pipe(gulp.dest('./styles/css'));
 });
 
-gulp.task('clean', function () {
+gulp.task('clean', function() {
     return gulp.src('dist').pipe(clean({
         force: true
     }));
 });
 
-gulp.task('copyfonts', function (callback) {
+gulp.task('copyfonts', function(callback) {
     return gulp.src([
             './lib/bower_components/font-awesome/fonts/fontawesome-webfont.*',
             './lib/bootstrap/fonts/*.*'
@@ -44,33 +46,57 @@ gulp.task('copyfonts', function (callback) {
 });
 
 
-gulp.task('copyimages', function () {
+gulp.task('copyimages', function() {
     return gulp.src(paths.images)
         .pipe(gulp.dest('dist/images'));
 });
 
 
-gulp.task('minify', function () {
+gulp.task('minify', function() {
     return gulp.src(paths.index)
         .pipe(usemin({
-            js: [minifyJs().on('error', function (err) {
+            js: [minifyJs().on('error', function(err) {
                 console.log('error: ', err)
             }), 'concat'],
             css: [minifyCss({
                 keepSpecialComments: 0
-            }).on('error', function (err) {
+            }).on('error', function(err) {
                 console.log('error: ', err)
             }), 'concat']
         }))
         .pipe(gulp.dest('dist'));
 });
 
-gulp.task('copytemplates', function () {
+gulp.task('copytemplates', function() {
     gulp.src(paths.templates)
         .pipe(gulp.dest('dist/modules'));
 });
 
-gulp.task('serve', function () {
+gulp.task('lint', function() {
+    return gulp.src([
+            'scripts/**/*.js',
+            'modules/**/*.js'
+        ])
+        .pipe(jshint())
+        .pipe(jshint.reporter(stylish));
+});
+
+gulp.task('reload-css', function() {
+    gulp.watch(['modules/**/*.*'])
+        .on('change', browserSync.reload);
+});
+
+gulp.task('reload-js', ['lint'], function() {
+    gulp.watch(['gulpfile.js', 'scripts/**/*.js', 'modules/**/*.js'])
+        .on('change', browserSync.reload);
+});
+
+gulp.task('reload-templates', function() {
+    gulp.watch(['index.html', 'modules/**/*.html'])
+        .on('change', browserSync.reload);
+});
+
+gulp.task('watch', function() {
     browserSync.init({
         notify: false,
         port: 9005,
@@ -80,11 +106,14 @@ gulp.task('serve', function () {
         }
     });
 
-    gulp.watch(['index.html', 'scripts/**/*.*', 'styles/**/*.*', 'modules/**/*.*'])
-        .on('change', browserSync.reload);
+    gulp.watch('styles/**/*.*', ['reload-css']);
+    gulp.watch(['gulpfile.js', 'scripts/**/*.js', 'modules/**/*.js'],['reload-js']);
+    gulp.watch(['index.html', 'modules/**/*.html'],['reload-templates']);
 });
 
-gulp.task('servedist', function () {
+gulp.task('serve', ['lint','watch']);
+
+gulp.task('servedist', function() {
     browserSync.init({
         notify: false,
         port: 9013,
@@ -99,10 +128,10 @@ gulp.task('servedist', function () {
 });
 
 
-gulp.task('build', function () {
-    return runSeq('clean', 'minify', 'copytemplates', 'copyfonts', 'copyimages');
+gulp.task('build', function() {
+    return runSeq('lint', 'clean', 'minify', 'copytemplates', 'copyfonts', 'copyimages');
 });
 
-gulp.task('dist', function () {
-    return runSeq('minify', 'copytemplates', 'copyfonts','copyimages');
+gulp.task('dist', function() {
+    return runSeq('lint', 'minify', 'copytemplates', 'copyfonts', 'copyimages');
 });
